@@ -4,7 +4,8 @@ using UnityEngine;
 
 public interface IControllFireArm
 {
-    public void FireWeapon();
+    public void StartFireWeapon();
+    public void StopFireWeapon();
     public void StartAdsWeapon();
     public void StopAdsWeapon();
     public void NextAdsStateWeapon();

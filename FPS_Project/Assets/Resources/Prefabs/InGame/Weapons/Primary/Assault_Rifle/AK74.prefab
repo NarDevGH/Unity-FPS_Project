@@ -710,7 +710,7 @@ GameObject:
   - component: {fileID: 6227622597473970672}
   - component: {fileID: 3117829726988424522}
   - component: {fileID: 8158481954667245639}
-  - component: {fileID: 4424012972581312499}
+  - component: {fileID: 7656133644489310230}
   m_Layer: 6
   m_Name: AK74
   m_TagString: Untagged
@@ -775,7 +775,7 @@ MonoBehaviour:
     fov: 60
     swapSpeed: 5
     posTransform: {fileID: 8158329520076703535}
---- !u!114 &4424012972581312499
+--- !u!114 &7656133644489310230
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -784,11 +784,35 @@ MonoBehaviour:
   m_GameObject: {fileID: 8459912701916366653}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f2b519ed728827640952b27210d85838, type: 3}
+  m_Script: {fileID: 11500000, guid: 61db3b3713679f84eab89ff8be140f73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _swayMultiplier: {x: 1, y: 1.5}
-  _smooth: 3
+  _idleRecoil:
+    weaponRecoil:
+      recoverySpeed: 2
+      snappiness: 6
+      recoilApplied:
+        position: {x: 0, y: 0, z: -0.01}
+        eulerAngles: {x: 0, y: 0, z: 0}
+    headRecoil:
+      recoverySpeed: 2
+      snappiness: 6
+      recoilApplied:
+        position: {x: 0, y: 0, z: 0}
+        eulerAngles: {x: -1, y: 0, z: 0}
+  _aimingRecoil:
+    weaponRecoil:
+      recoverySpeed: 2
+      snappiness: 6
+      recoilApplied:
+        position: {x: 0, y: 0, z: -0.01}
+        eulerAngles: {x: 0, y: 0, z: 0}
+    headRecoil:
+      recoverySpeed: 2
+      snappiness: 6
+      recoilApplied:
+        position: {x: 0, y: 0, z: 0}
+        eulerAngles: {x: -0.5, y: 0, z: 0}
 --- !u!1 &8686720930988633715
 GameObject:
   m_ObjectHideFlags: 0

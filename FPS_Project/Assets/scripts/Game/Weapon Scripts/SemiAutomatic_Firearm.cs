@@ -20,17 +20,19 @@ public class SemiAutomatic_Firearm : Firearm, IControllFireArm
         GetWorldCamera();
     }
 
-    public void FireWeapon() => Fire();
-    public void ReloadWeapon() => Reload();
+
+    public void StartFireWeapon() => Fire();
+    public void StopFireWeapon() { }
 
     public void StartAdsWeapon() => StartAds();
     public void StopAdsWeapon() => StopAds();
-
     public void NextAdsStateWeapon()
     {
         NextAdsState();
         if (Aiming == true) StartAds();
     }
+
+    public void ReloadWeapon() => Reload();
 
 
     protected override bool Fire()
@@ -39,8 +41,19 @@ public class SemiAutomatic_Firearm : Firearm, IControllFireArm
 
         CurrentAmmoLoaded--;
         FireRaycast(_worldcamera.transform.position, _worldcamera.transform.forward, _damage);
-        StartFireCooldown();
 
+        if (recoil_Handler) {
+            if (Aiming)
+            {
+                recoil_Handler.AimingFireRecoil();
+            }
+            else 
+            {
+                recoil_Handler.IdleFireRecoil();
+            }
+        }
+
+        StartFireCooldown();
         return true;
     }
 
@@ -91,4 +104,6 @@ public class SemiAutomatic_Firearm : Firearm, IControllFireArm
 
         }
     }
+
+    
 }

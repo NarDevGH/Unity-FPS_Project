@@ -18,8 +18,8 @@ public class Match_Manager : MonoBehaviour
     public void GeneratePlayer() 
     {
         GameObject player = Instantiate(_playerPrefab, _playerSpawn.position, _playerSpawn.rotation);
-        GameObject primary = LoadoutResources_Handler.Singleton.InGamePrimaryGameObject(UserData.Singleton.currentClassLoadout.primaryData.name);
-        GameObject secondary = LoadoutResources_Handler.Singleton.InGameSecondaryGameObject(UserData.Singleton.currentClassLoadout.secondaryData.name);
+        GameObject primary = LoadoutResources_Handler.Singleton.InGamePrimaryGameObject(UserData.Singleton.currentClassLoadout.primaryData.firearmData.name);
+        GameObject secondary = LoadoutResources_Handler.Singleton.InGameSecondaryGameObject(UserData.Singleton.currentClassLoadout.secondaryData.firearmData.name);
         GameObject melee = LoadoutResources_Handler.Singleton.InGameMeleeGameObject(UserData.Singleton.currentClassLoadout.meleeData.name);
         player.GetComponent<InGameLoadout_Handler>().GenerateInGameLoadout(primary, secondary, melee);
     }

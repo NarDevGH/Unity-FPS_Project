@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class Automatic_Firearm : Firearm, IControllFireArm
@@ -8,6 +9,7 @@ public class Automatic_Firearm : Firearm, IControllFireArm
     [SerializeField, Min(0)] private int _firerate;
 
     private Camera _worldcamera;
+    private Coroutine _fireRoutine;
 
     protected override void Awake()
     {
@@ -20,8 +22,8 @@ public class Automatic_Firearm : Firearm, IControllFireArm
         GetWorldCamera();
     }
 
-    public void FireWeapon() => Fire();
-    public void ReloadWeapon() => Reload();
+    public void StartFireWeapon() => StartFire();
+    public void StopFireWeapon() => StopFire();
 
     public void StartAdsWeapon() => StartAds();
     public void StopAdsWeapon() => StopAds();
@@ -31,6 +33,31 @@ public class Automatic_Firearm : Firearm, IControllFireArm
         if (Aiming == true) StartAds();
     }
 
+    public void ReloadWeapon() => Reload();
+
+
+
+    #region FIRE_METHODS
+
+    private void StartFire() 
+    {
+        _fireRoutine = StartCoroutine(FireRoutine());
+    }
+    private void StopFire() 
+    {
+        StopCoroutine(_fireRoutine);
+    }
+    private IEnumerator FireRoutine() 
+    {
+        while (true) 
+        {
+            if (OnFireCooldown) yield return null;
+
+            Fire();
+
+            yield return null;
+        }
+    }
 
     protected override bool Fire()
     {
@@ -38,22 +65,26 @@ public class Automatic_Firearm : Firearm, IControllFireArm
 
         CurrentAmmoLoaded--;
         FireRaycast(_worldcamera.transform.position, _worldcamera.transform.forward, _damage);
+
+        if (recoil_Handler) {
+            if (Aiming)
+            {
+                recoil_Handler.AimingFireRecoil();
+            }
+            else 
+            { 
+                recoil_Handler.IdleFireRecoil();
+            }
+        }
+
+
         StartFireCooldown();
-
         return true;
     }
 
-    protected override bool Reload()
-    {
-        if (!base.Reload()) return false;
+    #endregion
 
-        Reloading = true;
-        ReloadAmmo_FullMag();
-        Reloading = false;
-
-        return true;
-    }
-
+    #region ADS_METHODS
     protected override bool StartAds()
     {
         if (!base.StartAds()) return false;
@@ -75,6 +106,19 @@ public class Automatic_Firearm : Firearm, IControllFireArm
         if (!base.NextAdsState()) return false;
 
         adsHandler.NextAdsState();
+        return true;
+    }
+
+    #endregion
+
+    protected override bool Reload()
+    {
+        if (!base.Reload()) return false;
+
+        Reloading = true;
+        ReloadAmmo_FullMag();
+        Reloading = false;
+
         return true;
     }
 

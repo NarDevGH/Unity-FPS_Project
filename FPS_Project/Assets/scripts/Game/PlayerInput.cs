@@ -6,12 +6,12 @@ public class PlayerInput : MonoBehaviour
     private GameState gameState = GameState.Playing;
 
     #region IN_GAME_INPUT
-    public static float look_DeltaX => Input.GetAxis("Mouse X");
-    public static float look_DeltaY => Input.GetAxis("Mouse Y");
+    public static float LookDelta_X => Input.GetAxis("Mouse X");
+    public static float LookDelta_Y => Input.GetAxis("Mouse Y");
 
     #region MOVEMENT_INPUT
-    public static float horizontalInput => Input.GetAxis("Horizontal");
-    public static float verticalInput => Input.GetAxis("Vertical");
+    public static float Horizontal_Input => Input.GetAxis("Horizontal");
+    public static float Vertical_Input => Input.GetAxis("Vertical");
 
     public static bool Jump_Input => Input.GetKeyDown(KeyCode.Space);
 
@@ -19,19 +19,19 @@ public class PlayerInput : MonoBehaviour
 
     #region WEAPON INPUT
 
-    public static bool FireAutomatic => Input.GetMouseButton(0);
-    public static bool FireSemi => Input.GetMouseButtonDown(0);
-    public static bool StartAds => Input.GetMouseButtonDown(1);
-    public static bool StopAds => Input.GetMouseButtonUp(1);
-    public static bool NextAdsState => Input.GetKeyDown(KeyCode.T);
-    public static bool Reload => Input.GetKeyDown(KeyCode.R);
+    public static bool FireInput_Down => Input.GetMouseButtonDown(0);
+    public static bool FireInput_Up => Input.GetMouseButtonUp(0);
+    public static bool AdsInput_Down => Input.GetMouseButtonDown(1);
+    public static bool AdsInput_Up => Input.GetMouseButtonUp(1);
+    public static bool NextAdsState_Input => Input.GetKeyDown(KeyCode.T);
+    public static bool Reload_Input => Input.GetKeyDown(KeyCode.R);
 
     #endregion
 
     #region LOADOUT INPUT
-    public static bool EquipPrimaryInput => Input.GetKeyDown(KeyCode.Alpha1);
-    public static bool EquipSecondaryInput => Input.GetKeyDown(KeyCode.Alpha2);
-    public static bool EquipMeleeInput => Input.GetKeyDown(KeyCode.Alpha3);
+    public static bool EquipPrimary_Input => Input.GetKeyDown(KeyCode.Alpha1);
+    public static bool EquipSecondary_Input => Input.GetKeyDown(KeyCode.Alpha2);
+    public static bool EquipMelee_Input => Input.GetKeyDown(KeyCode.Alpha3);
     #endregion
 
     #endregion
@@ -40,6 +40,20 @@ public class PlayerInput : MonoBehaviour
 
     [Header("Setup")]
     [SerializeField] private FirstPersonController _fpc;
+
+    public static PlayerInput singleton { get; private set; }
+
+    private void Awake()
+    {
+        if (singleton == null) 
+        {
+            singleton = this;
+        }
+        else 
+        {
+            Destroy(this);
+        }
+    }
 
     private void Update()
     {
@@ -54,27 +68,31 @@ public class PlayerInput : MonoBehaviour
 
     private static void HandleLoadoutInput()
     {
-        if (EquipPrimaryInput) InGameLoadout_Handler.Singleton.EquipPrimary();
-        if (EquipSecondaryInput) InGameLoadout_Handler.Singleton.EquipSecondary();
-        if (EquipMeleeInput) InGameLoadout_Handler.Singleton.EquipMelee();
+        if (EquipPrimary_Input) InGameLoadout_Handler.Singleton.EquipPrimary();
+        if (EquipSecondary_Input) InGameLoadout_Handler.Singleton.EquipSecondary();
+        if (EquipMelee_Input) InGameLoadout_Handler.Singleton.EquipMelee();
 
         if (InGameLoadout_Handler.Singleton.currentWeaponType != MyDatatypes.Loadout.WeaponType.Melee) 
         {
             if (InGameLoadout_Handler.Singleton.currentFirearmController != null) 
             {
-                if (FireAutomatic || FireSemi) { 
-                    InGameLoadout_Handler.Singleton.currentFirearmController.FireWeapon();
+                if (FireInput_Down) { 
+                    InGameLoadout_Handler.Singleton.currentFirearmController.StartFireWeapon();
                 }
-                if (Reload) { 
+                if (FireInput_Up)
+                {
+                    InGameLoadout_Handler.Singleton.currentFirearmController.StopFireWeapon();
+                }
+                if (Reload_Input) { 
                     InGameLoadout_Handler.Singleton.currentFirearmController.ReloadWeapon();
                 }
-                if (StartAds) { 
+                if (AdsInput_Down) { 
                     InGameLoadout_Handler.Singleton.currentFirearmController.StartAdsWeapon();
                 }
-                if (StopAds) {
+                if (AdsInput_Up) {
                     InGameLoadout_Handler.Singleton.currentFirearmController.StopAdsWeapon();
                 }
-                if (NextAdsState) { 
+                if (NextAdsState_Input) { 
                     InGameLoadout_Handler.Singleton.currentFirearmController.NextAdsStateWeapon();
                 }
             }
@@ -83,8 +101,8 @@ public class PlayerInput : MonoBehaviour
 
     private void HandleMovementInput()
     {
-        _fpc.MovementInput(new Vector2(horizontalInput, verticalInput));
-        _fpc.LookInput(new Vector2(look_DeltaX, look_DeltaY));
+        _fpc.MovementInput(new Vector2(Horizontal_Input, Vertical_Input));
+        _fpc.LookInput(new Vector2(LookDelta_X, LookDelta_Y));
 
         if (Jump_Input) _fpc.Jump();
 

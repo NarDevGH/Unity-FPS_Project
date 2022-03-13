@@ -38,8 +38,7 @@ public class InGameLoadout_Handler : MonoBehaviour
             inGamePrimary.name = inGamePrimary.name.Replace("(Clone)", "");
             _primaryFirearmController = inGamePrimary.GetComponent<IControllFireArm>();
             AddPrimaryAttachments(inGamePrimary);
-            Firearm_Ads adsHandler = inGamePrimary.GetComponent<Firearm_Ads>();
-            if(adsHandler) adsHandler.InitAdsHandler();
+            
         }
 
         if (secondary) 
@@ -48,8 +47,6 @@ public class InGameLoadout_Handler : MonoBehaviour
             inGameSecondary.name = inGameSecondary.name.Replace("(Clone)", "");
             _secondaryFirearmController = inGameSecondary.GetComponent<IControllFireArm>();
             AddSecondaryAttachments(inGameSecondary);
-            Firearm_Ads adsHandler = inGameSecondary.GetComponent<Firearm_Ads>();
-            if (adsHandler) adsHandler.InitAdsHandler();
         }
 
         if (melee) 
@@ -84,7 +81,7 @@ public class InGameLoadout_Handler : MonoBehaviour
     private void AddPrimaryAttachments(GameObject primary)
     {
         Transform opticPos = primary.transform.Find("Attachments_Pos/Optic_Pos");
-        string opticName = UserData.Singleton.currentClassLoadout.primaryData.attachments.optic.name;
+        string opticName = UserData.Singleton.currentClassLoadout.primaryData.firearmData.attachments.optic.name;
         if (opticPos != null && opticName != null) 
         {
             GameObject optic = Instantiate(LoadoutResources_Handler.Singleton.optics[opticName].inGamePrefab as GameObject,opticPos);
@@ -97,7 +94,7 @@ public class InGameLoadout_Handler : MonoBehaviour
         }
 
         Transform barrelPos = primary.transform.Find("Attachments_Pos/Barrel_Pos");
-        string barrelName = UserData.Singleton.currentClassLoadout.primaryData.attachments.barrel.name;
+        string barrelName = UserData.Singleton.currentClassLoadout.primaryData.firearmData.attachments.barrel.name;
         if (barrelPos != null && barrelName != null)
         {
             GameObject barrel = Instantiate( LoadoutResources_Handler.Singleton.barrels[barrelName].inGamePrefab as GameObject, barrelPos);
@@ -105,7 +102,7 @@ public class InGameLoadout_Handler : MonoBehaviour
         }
 
         Transform underbarrelPos = primary.transform.Find("Attachments_Pos/Underbarrel_Pos");
-        string underbarrelName = UserData.Singleton.currentClassLoadout.primaryData.attachments.underbarrel.name;
+        string underbarrelName = UserData.Singleton.currentClassLoadout.primaryData.firearmData.attachments.underbarrel.name;
         if (underbarrelPos != null && underbarrelName != null)
         {
             GameObject underbarrel = Instantiate( LoadoutResources_Handler.Singleton.underbarrels[underbarrelName].inGamePrefab as GameObject, underbarrelPos);
@@ -115,7 +112,7 @@ public class InGameLoadout_Handler : MonoBehaviour
     private void AddSecondaryAttachments(GameObject secondary)
     {
         Transform opticPos = secondary.transform.Find("Attachments_Pos/Optic_Pos");
-        string opticName = UserData.Singleton.currentClassLoadout.secondaryData.attachments.optic.name;
+        string opticName = UserData.Singleton.currentClassLoadout.secondaryData.firearmData.attachments.optic.name;
         if (opticPos != null && opticName != null)
         {
             GameObject optic = Instantiate( LoadoutResources_Handler.Singleton.optics[opticName].inGamePrefab as GameObject, opticPos);
@@ -128,7 +125,7 @@ public class InGameLoadout_Handler : MonoBehaviour
         }
 
         Transform barrelPos = secondary.transform.Find("Attachments_Pos/Barrel_Pos");
-        string barrelName = UserData.Singleton.currentClassLoadout.secondaryData.attachments.barrel.name;
+        string barrelName = UserData.Singleton.currentClassLoadout.secondaryData.firearmData.attachments.barrel.name;
         if (barrelPos != null && barrelName != null)
         {
             GameObject barrel = Instantiate( LoadoutResources_Handler.Singleton.barrels[barrelName].inGamePrefab as GameObject, barrelPos);
@@ -136,7 +133,7 @@ public class InGameLoadout_Handler : MonoBehaviour
         }
 
         Transform underbarrelPos = secondary.transform.Find("Attachments_Pos/Underbarrel_Pos");
-        string underbarrelName = UserData.Singleton.currentClassLoadout.primaryData.attachments.underbarrel.name;
+        string underbarrelName = UserData.Singleton.currentClassLoadout.primaryData.firearmData.attachments.underbarrel.name;
         if (underbarrelPos != null && underbarrelName != null)
         {
             GameObject underbarrel = Instantiate( LoadoutResources_Handler.Singleton.underbarrels[underbarrelName].inGamePrefab as GameObject, underbarrelPos);

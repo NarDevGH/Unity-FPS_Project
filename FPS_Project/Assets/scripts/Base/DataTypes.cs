@@ -1,41 +1,97 @@
 using UnityEngine;
 
-namespace MyDatatypes.TransformData
+
+namespace MyDatatypes.UserData.Loadout
 {
-    [System.Serializable]
-    public class TransformData
+    public struct LoadoutData
     {
-        public Vector3 position;
-        public Vector3 eulerAngles;
-        public Vector3 local_Position;
-        public Vector3 local_EulerAngles;
+        public PrimaryData primaryData;
+        public SecondaryData secondaryData;
+        public MeleeData meleeData;
 
-        public TransformData()
+
+        public LoadoutData(PrimaryData primary, SecondaryData secondary, MeleeData melee)
         {
-            position = Vector3.zero;
-            eulerAngles = Vector3.zero;
-            local_Position = Vector3.zero;
-            local_EulerAngles = Vector3.zero;
-
+            this.primaryData = primary;
+            this.secondaryData = secondary;
+            this.meleeData = melee;
         }
+    }
 
-        public TransformData(Transform t)
+    public struct PrimaryData
+    {
+        public Firearm.FirearmData firearm;
+        public MyDatatypes.Loadout.PrimaryFirearmType type;
+
+        public PrimaryData(Firearm.FirearmData firearm, MyDatatypes.Loadout.PrimaryFirearmType type)
         {
-            position = t.position;
-            eulerAngles = t.eulerAngles;
-            local_Position = t.localPosition;
-            local_EulerAngles = t.localEulerAngles;
+            this.firearm = firearm;
+            this.type = type;
         }
+    }
 
-        public void CopyTransformVariables(Transform t)
+    public struct SecondaryData
+    {
+        public Firearm.FirearmData firearm;
+        public MyDatatypes.Loadout.SecondaryFirearmType type;
+
+        public SecondaryData(Firearm.FirearmData firearm, MyDatatypes.Loadout.SecondaryFirearmType type)
         {
-            position = t.position;
-            eulerAngles = t.eulerAngles;
-            local_Position = t.localPosition;
-            local_EulerAngles = t.localEulerAngles;
+            this.firearm = firearm;
+            this.type = type;
+        }
+    }
+
+    public struct MeleeData
+    {
+        public string name;
+        public MyDatatypes.Loadout.MeleeType type;
+
+
+        public MeleeData(string name, MyDatatypes.Loadout.MeleeType type)
+        {
+            this.name = name;
+            this.type = type;
+        }
+    }
+
+    public struct FirearmData
+    {
+        public string name;
+        public AttachmentsData attachments;
+
+        public FirearmData(string name, AttachmentsData attachments)
+        {
+            this.name = name;
+            this.attachments = attachments;
+        }
+    }
+
+    public struct AttachmentsData
+    {
+        public AttachmentData optic;
+        public AttachmentData barrel;
+        public AttachmentData underbarrel;
+
+        public AttachmentsData(AttachmentData optic, AttachmentData barrel, AttachmentData underbarrel)
+        {
+            this.optic = optic;
+            this.barrel = barrel;
+            this.underbarrel = underbarrel;
+        }
+    }
+
+    public struct AttachmentData
+    {
+        public string name;
+
+        public AttachmentData(string name)
+        {
+            this.name = name;
         }
     }
 }
+
 
 namespace MyDatatypes.GameManager
 {
@@ -71,6 +127,158 @@ namespace MyDatatypes.Movement
     }
 }
 
+namespace MyDatatypes.Firearm 
+{
+    [System.Serializable,HideInInspector]
+    public struct FirearmData 
+    {
+        public string name;
+        public GameObject firearm;
+        public AttachmentsData attachments;
+        public AttachmentsPosData attachmentsPos;
+
+        public FirearmData(string name)
+        {
+            this.name = name;
+            this.firearm = null;
+            this.attachments = new AttachmentsData();
+            this.attachmentsPos = new AttachmentsPosData();
+        }
+
+        public FirearmData(string name, GameObject firearm, AttachmentsData attachments, AttachmentsPosData attachmentsPos)
+        {
+            this.name = name;
+            this.firearm = firearm;
+            this.attachments = attachments;
+            this.attachmentsPos = attachmentsPos;
+        }
+    }
+
+    [System.Serializable, HideInInspector]
+    public struct AttachmentsPosData 
+    {
+        public AttachmentPosData optic;
+        public AttachmentPosData barrel;
+        public AttachmentPosData underbarrel;
+
+        public AttachmentsPosData(AttachmentPosData optic, AttachmentPosData barrel, AttachmentPosData underbarrel)
+        {
+            this.optic = optic;
+            this.barrel = barrel;
+            this.underbarrel = underbarrel;
+        }
+    }
+
+    [System.Serializable, HideInInspector]
+    public struct AttachmentPosData
+    {
+        public bool hasPos;
+        public Transform pos;
+
+        public AttachmentPosData(bool hasPos, Transform pos)
+        {
+            this.hasPos = hasPos;
+            this.pos = pos;
+        }
+    }
+
+    [System.Serializable, HideInInspector]
+    public struct AttachmentsData 
+    {
+        public AttachmentData optic;
+        public AttachmentData barrel;
+        public AttachmentData underbarrel;
+
+        public AttachmentsData(AttachmentData optic, AttachmentData barrel, AttachmentData underbarrel)
+        {
+            this.optic = optic;
+            this.barrel = barrel;
+            this.underbarrel = underbarrel;
+        }
+    }
+
+    [System.Serializable, HideInInspector]
+    public struct AttachmentData 
+    {
+        public string name;
+        public GameObject attachment;
+
+        public AttachmentData(string name, GameObject attachment)
+        {
+            this.name = name;
+            this.attachment = attachment;
+        }
+    }
+}
+
+namespace MyDatatypes.Firearm.Ads 
+{
+    [System.Serializable]
+    public struct AdsData
+    {
+        public float fov;
+        public float swapSpeed;
+        public Transform posTransform;
+        public AdsDisplacement displacement { get; set; }
+    }
+    public struct AdsDisplacement
+    {
+        public Vector3 position_Displacement;
+        public Vector3 eulerAngles;
+    }
+}
+
+namespace MyDatatypes.Firearm.Recoil
+{
+    [System.Serializable]
+    public struct FirearmRecoil 
+    {
+        public RecoilData weaponRecoil;
+        public RecoilData headRecoil;
+    }
+
+    [System.Serializable]
+    public struct RecoilData
+    {
+        public float recoverySpeed;
+        public float snappiness;
+        public RecoilAppliedData recoilApplied;
+    }
+
+    [System.Serializable]
+    public class RecoilAppliedData
+    {
+        public Vector3 position;
+        public Vector3 eulerAngles;
+
+        public RecoilAppliedData()
+        {
+            position = Vector3.zero;
+            eulerAngles = Vector3.zero;
+
+        }
+
+        public RecoilAppliedData(Transform transform)
+        {
+            position = transform.localPosition;
+            eulerAngles = transform.localEulerAngles;
+
+        }
+
+        public void ResetData()
+        {
+            position = Vector3.zero;
+            eulerAngles = Vector3.zero;
+        }
+
+        public void SetData(Vector3 position, Vector3 eulerangles)
+        {
+            this.position = position;
+            this.eulerAngles = eulerangles;
+        }
+    }
+}
+
 namespace MyDatatypes.Loadout
 {
     public enum LoadoutClass { Assault, Scout, Support, Reacon }
@@ -79,10 +287,7 @@ namespace MyDatatypes.Loadout
     public enum MeleeType { OneHandedBlade, OneHandedBlunt, TwoHandedBlade, TwoHandedBlunt }
     public enum WeaponType { Primary, Secondary, Melee}
     public enum AttachmentType { Optic, Barrel, Underbarrel, Other }
-}
 
-namespace MyDatatypes.Loadout.UserData 
-{
     public struct LoadoutData
     {
         public PrimaryData primaryData;
@@ -99,168 +304,85 @@ namespace MyDatatypes.Loadout.UserData
 
     public struct PrimaryData
     {
-        public string name;
+        public Firearm.FirearmData firearmData;
         public PrimaryFirearmType type;
-        public AttachmentsData attachments;
 
-        public PrimaryData(string name,PrimaryFirearmType type)
+        public PrimaryData(string name, PrimaryFirearmType type)
         {
-            this.name = name;
+            this.firearmData = new Firearm.FirearmData(name);
             this.type = type;
-            attachments = new AttachmentsData();
+        }
+
+        public PrimaryData(GameObject firearm, PrimaryFirearmType type)
+        {
+            Firearm.FirearmData newFirearm = new Firearm.FirearmData(firearm.name);
+            newFirearm.firearm = firearm;
+            this.firearmData = newFirearm;
+            this.type = type;
+        }
+
+        public PrimaryData(Firearm.FirearmData firearm, PrimaryFirearmType type)
+        {
+            this.firearmData = firearm;
+            this.type = type;
         }
     }
 
     public struct SecondaryData
     {
-        public string name;
+        public Firearm.FirearmData firearmData;
         public SecondaryFirearmType type;
-        public AttachmentsData attachments;
+
+        public SecondaryData(GameObject firearm, SecondaryFirearmType type)
+        {
+            Firearm.FirearmData  newFirearm= new Firearm.FirearmData(firearm.name);
+            newFirearm.firearm = firearm;
+            this.firearmData = newFirearm;
+            this.type = type;
+        }
 
         public SecondaryData(string name, SecondaryFirearmType type)
         {
-            this.name = name;
+            this.firearmData = new Firearm.FirearmData(name);
             this.type = type;
-            attachments = new AttachmentsData();
+        }
+
+        public SecondaryData(Firearm.FirearmData firearm, SecondaryFirearmType type)
+        {
+            this.firearmData = firearm;
+            this.type = type;
         }
     }
 
     public struct MeleeData 
     {
         public string name;
+        public GameObject melee;
         public MeleeType type;
 
         public MeleeData(string name, MeleeType type)
         {
             this.name = name;
+            this.melee = null;
             this.type = type;
         }
-    }
 
-    public struct AttachmentsData
-    {
-        public AttachmentData optic;
-        public AttachmentData barrel;
-        public AttachmentData underbarrel;
-
-        public AttachmentsData(AttachmentData optic, AttachmentData barrel, AttachmentData underbarrel)
+        public MeleeData(GameObject melee, MeleeType type)
         {
-            this.optic = optic;
-            this.barrel = barrel;
-            this.underbarrel = underbarrel;
+            this.name = melee.name;
+            this.melee = melee;
+            this.type = type;
         }
-    }
 
-    public struct AttachmentData
-    {
-        public string name;
-        public bool hasPos;
-
-        public AttachmentData(string name, bool hasPos)
+        public MeleeData(string name, GameObject melee, MeleeType type)
         {
             this.name = name;
-            this.hasPos = hasPos;
-        }
-    }
-}
-
-namespace MyDatatypes.Loadout.Menu
-{
-    public struct LoadoutData
-    {
-        public PrimaryData primary;
-        public SecondaryData secondary;
-        public MeleeData melee;
-
-        public LoadoutData(PrimaryData primary, SecondaryData secondary, MeleeData melee)
-        {
-            this.primary = primary;
-            this.secondary = secondary;
             this.melee = melee;
-        }
-    }
-
-    public struct PrimaryData
-    {
-        public GameObject firearm;
-        public PrimaryFirearmType type;
-        public Attachments attachments;
-
-        public PrimaryData(GameObject firearm, PrimaryFirearmType type)
-        {
-            this.firearm = firearm;
-            this.type = type;
-            attachments = new Attachments();
-        }
-
-        public PrimaryData(GameObject firearm, PrimaryFirearmType type, Attachments attachments)
-        {
-            this.firearm = firearm;
-            this.type = type;
-            this.attachments = attachments;
-        }
-    }
-
-    public struct SecondaryData
-    {
-        public GameObject firearm;
-        public SecondaryFirearmType type;
-        public Attachments attachments;
-
-        public SecondaryData(GameObject firearm, SecondaryFirearmType type)
-        {
-            this.firearm = firearm;
-            this.type = type;
-            attachments = new Attachments();
-        }
-        public SecondaryData(GameObject firearm, SecondaryFirearmType type,Attachments attachments)
-        {
-            this.firearm = firearm;
-            this.type = type;
-            this.attachments = attachments;
-        }
-    }
-
-    public struct MeleeData
-    {
-        public GameObject weapon;
-        public MeleeType type;
-
-        public MeleeData(GameObject weapon, MeleeType type)
-        {
-            this.weapon = weapon;
             this.type = type;
         }
     }
 
-    public struct Attachments
-    {
-        public AttachmentData optic;
-        public AttachmentData barrel;
-        public AttachmentData underbarrel;
-    }
-
-    public struct AttachmentData
-    {
-        public bool hasPos;
-        public Transform pos;
-        public GameObject attachment;
-    }
 }
 
-namespace MyDatatypes.Ads 
-{
-    [System.Serializable]
-    public struct AdsData
-    {
-        public float fov;
-        public float swapSpeed;
-        public Transform posTransform;
-        public AdsDisplacement displacement { get; set; }
-    }
-    public struct AdsDisplacement
-    {
-        public Vector3 position_Displacement;
-        public Vector3 eulerAngles;
-    }
-}
+
+

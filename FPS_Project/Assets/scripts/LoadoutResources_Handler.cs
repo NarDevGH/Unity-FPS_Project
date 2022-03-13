@@ -59,6 +59,67 @@ public class LoadoutResources_Handler : MonoBehaviour
     {
         _resourcesFullyLoaded = true;
     }
+    public GameObject MenuPrimaryGameObject(string name)
+    {
+        name = name.Replace("(Clone)", "");
+        if (assaultRifles.ContainsKey(name))
+        {
+            return assaultRifles[name].menuPrefab as GameObject;
+        }
+        else if (battleRifles.ContainsKey(name))
+        {
+            return battleRifles[name].menuPrefab as GameObject;
+        }
+        else if (shotguns.ContainsKey(name))
+        {
+            return shotguns[name].menuPrefab as GameObject;
+        }
+        else if (carbines.ContainsKey(name))
+        {
+            return carbines[name].menuPrefab as GameObject;
+        }
+        else if (pdws.ContainsKey(name))
+        {
+            return pdws[name].menuPrefab as GameObject;
+        }
+        else if (dmrs.ContainsKey(name))
+        {
+            return dmrs[name].menuPrefab as GameObject;
+        }
+        else if (lmgs.ContainsKey(name))
+        {
+            return lmgs[name].menuPrefab as GameObject;
+        }
+        else if (sniperRifles.ContainsKey(name))
+        {
+            return sniperRifles[name].menuPrefab as GameObject;
+        }
+
+        return null;
+    }
+
+    public GameObject MenuSecondaryGameObject(string name)
+    {
+        name = name.Replace("(Clone)", "");
+        if (pistols.ContainsKey(name))
+        {
+            return pistols[name].menuPrefab as GameObject;
+        }
+        else if (machinePistols.ContainsKey(name))
+        {
+            return machinePistols[name].menuPrefab as GameObject;
+        }
+        else if (revolvers.ContainsKey(name))
+        {
+            return revolvers[name].menuPrefab as GameObject;
+        }
+        else if (othersSecondary.ContainsKey(name))
+        {
+            return othersSecondary[name].menuPrefab as GameObject;
+        }
+
+        return null;
+    }
 
     public GameObject InGamePrimaryGameObject(string name) 
     {

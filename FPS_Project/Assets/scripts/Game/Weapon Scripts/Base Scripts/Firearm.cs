@@ -3,12 +3,14 @@ using UnityEngine;
 
 public class Firearm : MonoBehaviour
 {
+    public Firearm_Ads adsHandler { get; private set; }
+    public Firearm_Recoil recoil_Handler { get; private set; }
+
     public bool CanFire { get; set; }
     public bool CanAds { get; set; }
     public bool CanReload { get; set; }
     public bool CanInspect { get; set; }
 
-    public Firearm_Ads adsHandler { get; private set; }
 
     protected int CurrentAmmoLoaded { get; set; }
     protected int MaxMagCapacity { get; set; }
@@ -25,8 +27,6 @@ public class Firearm : MonoBehaviour
 
     protected virtual void Awake()
     {
-        adsHandler = gameObject.GetComponent<Firearm_Ads>();
-
         CanFire = true;
         CanAds = true;
         CanReload = true;
@@ -34,6 +34,13 @@ public class Firearm : MonoBehaviour
 
         Aiming = false;
         Reloading = false;
+
+
+        adsHandler = gameObject.GetComponent<Firearm_Ads>();
+        if (adsHandler) adsHandler.InitAdsHandler();
+
+        recoil_Handler = gameObject.GetComponent<Firearm_Recoil>();
+        if (recoil_Handler) recoil_Handler.InitFirearmRecoil();
     }
 
     #region FIRE_METHODS

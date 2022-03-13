@@ -1,6 +1,5 @@
 using UnityEngine;
 using MyDatatypes.Loadout;
-using MyDatatypes.Loadout.UserData;
 
 public class UserData : MonoBehaviour
 {
@@ -94,17 +93,4 @@ public class UserData : MonoBehaviour
         }
     }
 
-    public static AttachmentsData SerializeAttachments(MyDatatypes.Loadout.Menu.Attachments attachments) 
-    {
-        return new AttachmentsData(new AttachmentData(attachments.optic.attachment==null ? null : attachments.optic.attachment.name, attachments.optic.hasPos),
-                                   new AttachmentData(attachments.barrel.attachment == null ? null : attachments.barrel.attachment.name, attachments.optic.hasPos),
-                                   new AttachmentData(attachments.underbarrel.attachment == null ? null : attachments.underbarrel.attachment.name, attachments.optic.hasPos));
-    }
-
-    public static LoadoutData SerializeLoadoutData(MyDatatypes.Loadout.Menu.LoadoutData loadoutData) 
-    {
-        return new LoadoutData(new PrimaryData(loadoutData.primary.firearm.name,loadoutData.primary.type),
-                               new SecondaryData(loadoutData.secondary.firearm.name,loadoutData.secondary.type),
-                               new MeleeData(loadoutData.melee.weapon.name,loadoutData.melee.type));
-    }
 }
