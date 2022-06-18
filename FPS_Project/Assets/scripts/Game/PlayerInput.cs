@@ -12,16 +12,18 @@ public class PlayerInput : MonoBehaviour
     #region MOVEMENT_INPUT
     public static float Horizontal_Input => Input.GetAxis("Horizontal");
     public static float Vertical_Input => Input.GetAxis("Vertical");
-
+    public static Vector2 MoveDir_Input => new Vector2(Horizontal_Input, Vertical_Input);
+    public static bool Sprinting;
     public static bool Jump_Input => Input.GetKeyDown(KeyCode.Space);
-
     #endregion
 
     #region WEAPON INPUT
 
     public static bool FireInput_Down => Input.GetMouseButtonDown(0);
+    public static bool Firing_Input => Input.GetMouseButton(0);
     public static bool FireInput_Up => Input.GetMouseButtonUp(0);
     public static bool AdsInput_Down => Input.GetMouseButtonDown(1);
+    public static bool Aiming_Input => Input.GetMouseButton(1);
     public static bool AdsInput_Up => Input.GetMouseButtonUp(1);
     public static bool NextAdsState_Input => Input.GetKeyDown(KeyCode.T);
     public static bool Reload_Input => Input.GetKeyDown(KeyCode.R);
@@ -111,10 +113,12 @@ public class PlayerInput : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.LeftShift))
             {
+                Sprinting = true;
                 _fpc.StartSprint();
             }
             if (Input.GetKeyUp(KeyCode.LeftShift))
             {
+                Sprinting = false;
                 _fpc.StopSprint();
             }
         }
@@ -124,10 +128,12 @@ public class PlayerInput : MonoBehaviour
             {
                 if (_fpc.isSprinting == false)
                 {
+                    Sprinting = true;
                     _fpc.StartSprint();
                 }
                 else
                 {
+                    Sprinting = false;
                     _fpc.StopSprint();
                 }
             }

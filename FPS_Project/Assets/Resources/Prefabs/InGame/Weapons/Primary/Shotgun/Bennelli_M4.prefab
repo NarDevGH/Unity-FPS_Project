@@ -41,6 +41,7 @@ GameObject:
   - component: {fileID: 3536204904798786132}
   - component: {fileID: 425771378981685860}
   - component: {fileID: 297194345899234142}
+  - component: {fileID: 1173919857955451154}
   m_Layer: 6
   m_Name: Bennelli_M4
   m_TagString: Untagged
@@ -105,6 +106,44 @@ MonoBehaviour:
     fov: 0
     swapSpeed: 0
     posTransform: {fileID: 0}
+--- !u!114 &1173919857955451154
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1303879668565114009}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61db3b3713679f84eab89ff8be140f73, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _idleRecoil:
+    weaponRecoil:
+      recoverySpeed: 2
+      snappiness: 6
+      recoilApplied:
+        position: {x: 0, y: 0, z: -0.05}
+        eulerAngles: {x: 0, y: 1, z: 0}
+    headRecoil:
+      recoverySpeed: 2
+      snappiness: 6
+      recoilApplied:
+        position: {x: 0, y: 0, z: 0}
+        eulerAngles: {x: -2, y: 0, z: 0}
+  _aimingRecoil:
+    weaponRecoil:
+      recoverySpeed: 2
+      snappiness: 6
+      recoilApplied:
+        position: {x: 0, y: 0, z: -0.01}
+        eulerAngles: {x: -0.1, y: 0.5, z: 0}
+    headRecoil:
+      recoverySpeed: 2
+      snappiness: 6
+      recoilApplied:
+        position: {x: 0, y: 0, z: 0}
+        eulerAngles: {x: -1.5, y: 0, z: 0}
 --- !u!1 &3058682005007776224
 GameObject:
   m_ObjectHideFlags: 0

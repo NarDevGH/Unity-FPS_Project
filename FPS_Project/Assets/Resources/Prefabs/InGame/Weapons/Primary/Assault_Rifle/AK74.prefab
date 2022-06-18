@@ -792,27 +792,27 @@ MonoBehaviour:
       recoverySpeed: 2
       snappiness: 6
       recoilApplied:
-        position: {x: 0, y: 0, z: -0.01}
-        eulerAngles: {x: 0, y: 0, z: 0}
+        position: {x: 0, y: 0, z: -0.05}
+        eulerAngles: {x: 0, y: 1, z: 0}
     headRecoil:
       recoverySpeed: 2
       snappiness: 6
       recoilApplied:
         position: {x: 0, y: 0, z: 0}
-        eulerAngles: {x: -1, y: 0, z: 0}
+        eulerAngles: {x: -2, y: 0, z: 0}
   _aimingRecoil:
     weaponRecoil:
       recoverySpeed: 2
       snappiness: 6
       recoilApplied:
         position: {x: 0, y: 0, z: -0.01}
-        eulerAngles: {x: 0, y: 0, z: 0}
+        eulerAngles: {x: -0.1, y: 0.5, z: 0}
     headRecoil:
       recoverySpeed: 2
       snappiness: 6
       recoilApplied:
         position: {x: 0, y: 0, z: 0}
-        eulerAngles: {x: -0.5, y: 0, z: 0}
+        eulerAngles: {x: -1.5, y: 0, z: 0}
 --- !u!1 &8686720930988633715
 GameObject:
   m_ObjectHideFlags: 0

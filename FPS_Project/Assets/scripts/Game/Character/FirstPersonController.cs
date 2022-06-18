@@ -23,15 +23,27 @@ public class FirstPersonController : MonoBehaviour
     public bool canAutoSlideOnSlopes { get; set; }
 
 
-    public bool isStanding => _currentState == PoseState.Standing;
-    public bool isCrouching => _currentState == PoseState.Crouching;
-    public bool isProne => _currentState == PoseState.Prone;
+    public bool isStanding => _currentPoseState == PoseState.Standing;
+    public bool isCrouching => _currentPoseState == PoseState.Crouching;
+    public bool isProne => _currentPoseState == PoseState.Prone;
     public bool isSprinting => _sprinting;
     public bool isClimbing => _climb;
     public bool isGrounded => _charController.isGrounded;
     public bool isMoving => (canMove && (_moveDirectionInput.x != 0f || _moveDirectionInput.y != 0f));
 
-    public PoseState currentPoseState { get { return _currentState; } }
+    public PoseState currentPoseState => _currentPoseState;
+    public MovementState currentMovementState {
+        get 
+        {
+            if (_currentMoveSpeed > 0)
+            {
+                if (_currentMoveSpeed <= _walkSpeed) return MovementState.Walking;
+                else return MovementState.Sprinting;            
+            }
+            else return MovementState.Still;
+        }
+    }
+
 
     [Header("Movement Parameters")]
     [SerializeField, Min(0)] private float _walkSpeed = 3f;
@@ -76,8 +88,10 @@ public class FirstPersonController : MonoBehaviour
     private Vector2 _lookInput;
     private float xRotation;
 
-    private PoseState _currentState = PoseState.Standing;
+    private PoseState _currentPoseState = PoseState.Standing;
     private PoseData _targetPoseData;
+
+    private MovementState _currentMovementState = MovementState.Still;
 
     private RaycastHit _groundHitPoint;
 
@@ -183,7 +197,7 @@ public class FirstPersonController : MonoBehaviour
             _slideRoutine = null;
         }
 
-        _currentState = PoseState.Standing;
+        _currentPoseState = PoseState.Standing;
 
         _sprinting = true; 
     }
@@ -198,25 +212,25 @@ public class FirstPersonController : MonoBehaviour
     {
         if (!_canStandUp) return;
 
-        if (_currentState == PoseState.Crouching)
+        if (_currentPoseState == PoseState.Crouching)
         {
-            _currentState = PoseState.Standing;
+            _currentPoseState = PoseState.Standing;
         }
-        else if (_currentState == PoseState.Prone)
+        else if (_currentPoseState == PoseState.Prone)
         {
-            _currentState = PoseState.Crouching;
+            _currentPoseState = PoseState.Crouching;
         }
     }
 
     public void SetCurrentStateTowardsProning()
     {
-        if (_currentState == PoseState.Standing)
+        if (_currentPoseState == PoseState.Standing)
         {
-            _currentState = PoseState.Crouching;
+            _currentPoseState = PoseState.Crouching;
         }
-        else if (_currentState == PoseState.Crouching)
+        else if (_currentPoseState == PoseState.Crouching)
         {
-            _currentState = PoseState.Prone;
+            _currentPoseState = PoseState.Prone;
         }
     }
 
@@ -264,7 +278,7 @@ public class FirstPersonController : MonoBehaviour
 
     private void GetTargetSpeed()
     {
-        switch (_currentState)
+        switch (_currentPoseState)
         {
             case PoseState.Standing:
                 if (_sprinting) _targetMoveSpeed = _sprintSpeed;
@@ -327,7 +341,7 @@ public class FirstPersonController : MonoBehaviour
 
     private void GetTargetPoseData()
     {
-        switch (_currentState)
+        switch (_currentPoseState)
         {
             case PoseState.Standing:
                 _targetPoseData = _standingData;
@@ -363,9 +377,9 @@ public class FirstPersonController : MonoBehaviour
     {
         if (_climb)
         {
-            if (_currentState == PoseState.Prone) return;
+            if (_currentPoseState == PoseState.Prone) return;
 
-            if (_currentState == PoseState.Crouching) _currentState = PoseState.Standing;
+            if (_currentPoseState == PoseState.Crouching) _currentPoseState = PoseState.Standing;
 
             _moveDirection = new Vector3(0f, _climbSpeed * _moveDirectionInput.y, 0f);
         }
@@ -373,7 +387,7 @@ public class FirstPersonController : MonoBehaviour
 
     private IEnumerator SlideRoutine()
     {
-        _currentState = PoseState.Crouching;
+        _currentPoseState = PoseState.Crouching;
 
         float _slideTimer = 0.0f;
         Vector3 _slideDir = transform.forward;
@@ -390,7 +404,7 @@ public class FirstPersonController : MonoBehaviour
 
     private IEnumerator DolphindiveRoutine()
     {
-        _currentState = PoseState.Prone;
+        _currentPoseState = PoseState.Prone;
 
         _moveDirection.y = _dolphinDiveJump;
 
